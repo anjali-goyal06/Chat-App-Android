@@ -1,5 +1,6 @@
 package com.example.chatapp.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,20 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Adapter.UserAdapter;
+import com.example.chatapp.Model.Users;
 import com.example.chatapp.R;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserList extends AppCompatActivity {
 
+    private FirebaseAuth auth;
+    FirebaseDatabase database;
     RecyclerView mainRecyclerView ;
     UserAdapter userAdapter;
-    ArrayList<String> users = new ArrayList<>();
+    ArrayList<Users> userlist = new ArrayList<>();
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -39,10 +44,14 @@ public class UserList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id==R.id.logoutButton){
+            auth.signOut();
 
-        if (item.getItemId()==R.id.logoutButton){
-            ParseUser.logOut();
             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+        }else if(id==R.id.setting){
+            Intent intent = new Intent(getApplicationContext(),Settings_activity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -52,31 +61,42 @@ public class UserList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereNotEqualTo("username",ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if(e==null){
-                    if(objects.size()>0){
-                        for(ParseUser user : objects){
-                            users.add(user.getUsername());
-                        }
-                        userAdapter.notifyDataSetChanged();
-                    }
-                }else{
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        database  = FirebaseDatabase.getInstance();
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
         mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.i("users.size = " , "s = " + users.size());
-        userAdapter = new UserAdapter(UserList.this,users);
+        Log.i("users.size = " , "s = " + userlist.size());
+        userAdapter = new UserAdapter(UserList.this,userlist);
         mainRecyclerView.setAdapter(userAdapter);
         userAdapter.notifyDataSetChanged();
+
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        progressDialog = new ProgressDialog(UserList.this);
+        progressDialog.setTitle("Loading Data");
+        progressDialog.setMessage("Wait for a while");
+
+        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.show();
+                userlist.clear();
+                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                     Users user = dataSnapshot.getValue(Users.class);
+                     user.setUserId(dataSnapshot.getKey());
+
+                     if(!user.getUserId().equals(FirebaseAuth.getInstance().getUid()))
+                     userlist.add(user);
+                 }
+                 userAdapter.notifyDataSetChanged();
+                 progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
 

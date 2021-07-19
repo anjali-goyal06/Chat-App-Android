@@ -1,6 +1,16 @@
 package com.example.chatapp.Model;
 
 public class Messages {
+    String messageId;
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     String message;
     String senderId;
     long timeStamp=0;

@@ -12,23 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Activity.ChatRoom;
 import com.example.chatapp.Activity.UserList;
+import com.example.chatapp.Model.Users;
 import com.example.chatapp.R;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     UserList userList;
-    ArrayList<String> users;
+    ArrayList<Users> users;
 
 
-    public UserAdapter(UserList userList, ArrayList<String> users) {
+    public UserAdapter(UserList userList, ArrayList<Users> users) {
         this.userList = userList;
         this.users = users;
     }
@@ -43,72 +45,64 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String user = users.get(position);
-        holder.userName.setText(user);
-        holder.Name.setText(user);
+        Users user = users.get(position);
+        Log.i("kkkkkfullinfo" , user.getEmailId() + user.getUserId() + user.getUsername() + user.getProfilePic());
+        holder.userName.setText(user.getUsername());
+        Picasso.get().load(user.getProfilePic()).placeholder(R.drawable.profile).into(holder.user_profile);
 
+        Log.i("gggggggggggggggg","abc = " +  user.getProfilePic());
+
+        FirebaseDatabase.getInstance().getReference().child("chats")
+                .child(FirebaseAuth.getInstance().getUid() + user.getUserId())
+                .orderByChild("timestamp")
+                .limitToLast(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()){
+                            for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                 holder.lastMessage.setText(dataSnapshot.child("message")
+                                 .getValue().toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String[] userId = new String[2];
                 Intent intent = new Intent(userList, ChatRoom.class);
-
-                intent.putExtra("userName",user);
-
-                //userList.startActivity(intent);
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereEqualTo("username",user);
-
-                userId[0] = null;
-                userId[1] =ParseUser.getCurrentUser().getObjectId();
-
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
-                            Log.i("infoo , ", " recieever id = " + objects.size());
-                            if (objects.size() > 0) {
-                                userId[0] = objects.get(0).getObjectId();
-                                intent.putExtra("recieverId",userId[0]);
-                            }
-
-                            userList.startActivity(intent);
-                        } else {
-                            Log.e("infoo", e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
+                intent.putExtra("userId",user.getUserId());
+                intent.putExtra("userName",user.getUsername());
+                intent.putExtra("profilePic",user.getProfilePic());
+                userList.startActivity(intent);
             }
         });
     }
 
 
-//
-
-
     @Override
     public int getItemCount()
     {
-        Log.i("insideeee= " , " s = " + users);
-       if(users!=null)
         return users.size();
-        return 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView user_profile;
         TextView userName;
-        TextView Name;
+        TextView lastMessage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             user_profile = itemView.findViewById(R.id.profile_image);
             userName = itemView.findViewById(R.id.username);
-            Name = itemView.findViewById(R.id.Name);
+            lastMessage = itemView.findViewById(R.id.Name);
         }
     }
 }
