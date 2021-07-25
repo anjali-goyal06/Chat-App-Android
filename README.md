@@ -13,16 +13,16 @@ An app for chatting in two persons is created using FireBase where User Registra
     <li> Setting (To change userName,ProfilePic,Status) [Page 8]
    </ul> 
   
-<img src="app/src/main/res/drawable/ss1.jpg" width="250" float="left" margin-right="50px">
-<img src="app/src/main/res/drawable/ss2.jpg" width="250" float="left" margin-right="50px">
-<img src="app/src/main/res/drawable/ss3.jpg" width="250" float="left" margin-right="50px">
+<img src="app/src/main/res/drawable/ss1.jpg" width="220" float="left">
+<img src="app/src/main/res/drawable/ss2.jpg" width="220" float="left">
+<img src="app/src/main/res/drawable/ss3.jpg" width="220" float="left">
  </div>
- <div float="left" width="200"> 
-<img src="app/src/main/res/drawable/ss4.jpg" width="250" float="left">
-<img src="app/src/main/res/drawable/ss6.jpg" width="250" float="left">
-<img src="app/src/main/res/drawable/ss7.jpg" width="250" float="left">
+ <div float="left" width="500"> 
+<img src="app/src/main/res/drawable/ss4.jpg" width="220" float="left">
+<img src="app/src/main/res/drawable/ss6.jpg" width="220" float="left">
+<img src="app/src/main/res/drawable/ss7.jpg" width="220" float="left">
 </div>
-<div float="left" width="200"> 
-<img src="app/src/main/res/drawable/ss8.jpg" width="250" float="left">
-<img src="app/src/main/res/drawable/ss9.jpg" width="250" float="left">
+<div float="left" width="500"> 
+<img src="app/src/main/res/drawable/ss8.jpg" width="220" float="left">
+<img src="app/src/main/res/drawable/ss9.jpg" width="220" float="left">
 </div>
