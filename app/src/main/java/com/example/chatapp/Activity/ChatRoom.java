@@ -1,5 +1,6 @@
 package com.example.chatapp.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,7 @@ public class ChatRoom extends AppCompatActivity {
     EditText editText;
     String TAG = "infoo";
     TextView userNameTitle;
+    ProgressDialog  progressDialog;
 
 
     @Override
@@ -59,6 +61,8 @@ public class ChatRoom extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         String senderId = auth.getCurrentUser().getUid();
+
+
 
         Intent intent = getIntent();
         String reciverId= intent.getStringExtra("userId");
@@ -114,7 +118,9 @@ public class ChatRoom extends AppCompatActivity {
                 }
                 editText.setText("");
                 final Messages message = new Messages(msg,senderId);
-                message.setTimeStamp(new Date().getTime());
+               Log.i("timmme " , String.valueOf(new Date().getHours() + " - " + new Date().getMinutes() + " "));
+               long time =  new Date().getHours()*100 + new Date().getMinutes();
+                message.setTimeStamp(time);
 
                 database.getReference().child("chats")
                         .child(senderRoom)

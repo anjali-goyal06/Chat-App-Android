@@ -75,11 +75,13 @@ public class UserList extends AppCompatActivity {
         progressDialog = new ProgressDialog(UserList.this);
         progressDialog.setTitle("Loading Data");
         progressDialog.setMessage("Wait for a while");
+        progressDialog.show();
 
         database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                progressDialog.show();
+
                 userlist.clear();
                  for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                      Users user = dataSnapshot.getValue(Users.class);

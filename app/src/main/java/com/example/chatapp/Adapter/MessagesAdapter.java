@@ -83,14 +83,19 @@ public class  MessagesAdapter extends RecyclerView.Adapter {
                 return false;
             }
         });
+        long hour = messages.getTimeStamp()/100;
+        long min = messages.getTimeStamp()%100;
 
         if(holder.getClass()==SenderViewHolder.class){
             SenderViewHolder viewHolder = (SenderViewHolder) holder;
             viewHolder.textMessage.setText(messages.getMessage());
-//            viewHolder.date.setText((int) messages.getTimeStamp());
+            if(min<=9) viewHolder.date.setText(hour+":0"+min);
+            else viewHolder.date.setText(hour+":"+min);
         }else{
             RecieverViewHolder viewHolder = (RecieverViewHolder) holder;
             viewHolder.textMessage.setText(messages.getMessage());
+            if(min<=9) viewHolder.date.setText(hour+":0"+min);
+            else viewHolder.date.setText(hour+":"+min);
         }
     }
 

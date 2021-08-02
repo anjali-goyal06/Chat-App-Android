@@ -39,7 +39,7 @@
             <TextView
                 android:id="@+id/Name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="27dp"
                 android:textColor="@color/Darkblue"
                 android:textSize="@dimen/_15sdp"
                 android:paddingRight="@dimen/_5sdp"

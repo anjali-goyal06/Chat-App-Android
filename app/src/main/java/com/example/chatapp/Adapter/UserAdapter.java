@@ -1,7 +1,6 @@
 package com.example.chatapp.Adapter;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +45,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Users user = users.get(position);
-        Log.i("kkkkkfullinfo" , user.getEmailId() + user.getUserId() + user.getUsername() + user.getProfilePic());
+    //    Log.i("kkkkkfullinfo" , user.getEmailId() + user.getUserId() + user.getUsername() + user.getProfilePic());
         holder.userName.setText(user.getUsername());
         Picasso.get().load(user.getProfilePic()).placeholder(R.drawable.profile).into(holder.user_profile);
-
-        Log.i("gggggggggggggggg","abc = " +  user.getProfilePic());
+        holder.lastMessage.setText(user.getAbout());
+    //    Log.i("gggggggggggggggg","abc = " +  user.getProfilePic());
 
         FirebaseDatabase.getInstance().getReference().child("chats")
                 .child(FirebaseAuth.getInstance().getUid() + user.getUserId())

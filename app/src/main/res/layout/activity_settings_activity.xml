@@ -66,18 +66,19 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:text="User Name"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="20dp" />
 
                 <EditText
                     android:id="@+id/userName_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:ems="10"
                     android:hint="Enter your Name"
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -93,17 +94,18 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:text="About"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="20dp" />
 
                 <EditText
                     android:id="@+id/about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton

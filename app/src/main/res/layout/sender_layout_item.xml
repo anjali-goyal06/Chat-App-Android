@@ -2,42 +2,46 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
 
-    <TextView
-        android:id="@+id/txtMessages"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@drawable/sender_shape"
-        android:padding="@dimen/_7sdp"
-        android:text="helloo check "
-        android:textColor="@color/white"
-        android:textSize="@dimen/_15sdp" />
-
-    <TextView
-        android:id="@+id/timeStampSender"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtMessages"
-        android:layout_alignTop="@+id/txtMessages"
-        android:layout_alignBottom="@+id/txtMessages"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
-        android:layout_marginBottom="5dp"
-        android:text="TextView"
-        android:textColor="@color/white"
-        android:textSize="12.00dp" />
+        android:background="@drawable/sender_shape"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:padding="@dimen/_2sdp"
+            android:text="helloo check "
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/timeStampSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="5dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="12.00dp" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

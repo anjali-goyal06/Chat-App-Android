@@ -46,49 +46,53 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        PersonName    = findViewById(R.id.editTextPersonName);
-        Password      = findViewById(R.id.editTextTextPassword);
-        switchText    = findViewById(R.id.textView);
-        email        = findViewById(R.id.emailId);
-        SignUpButton  = findViewById(R.id.buttonLog);
 
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            Log.i("kkkkkkk", "51  kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setTitle("Creating Account");
-        progressDialog.setMessage("Wait for a while");
+            PersonName = findViewById(R.id.editTextPersonName);
+            Password = findViewById(R.id.editTextTextPassword);
+            switchText = findViewById(R.id.textView);
+            email = findViewById(R.id.emailId);
+            SignUpButton = findViewById(R.id.buttonLog);
 
-        SignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show();
-                auth.createUserWithEmailAndPassword(email.getText().toString(),Password.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressDialog.dismiss();
-                                if(task.isSuccessful()){
-                                    Users user = new Users(PersonName.getText().toString(),email.getText().toString(),Password.getText().toString());
-                                    Toast.makeText(MainActivity.this,"User signedUp successfully",Toast.LENGTH_SHORT).show();
+            auth = FirebaseAuth.getInstance();
+            database = FirebaseDatabase.getInstance();
 
-                                    String id = task.getResult().getUser().getUid();
-                                    database.getReference().child("Users").child(id).setValue(user);
-                                    nextPage();
-                                }else{
-                                    Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setTitle("Creating Account");
+            progressDialog.setMessage("Wait for a while");
+
+            SignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    progressDialog.show();
+                    auth.createUserWithEmailAndPassword(email.getText().toString(), Password.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    progressDialog.dismiss();
+                                    if (task.isSuccessful()) {
+                                        Users user = new Users(PersonName.getText().toString(), email.getText().toString(), Password.getText().toString());
+                                        Toast.makeText(MainActivity.this, "User signedUp successfully", Toast.LENGTH_SHORT).show();
+
+                                        String id = task.getResult().getUser().getUid();
+                                        database.getReference().child("Users").child(id).setValue(user);
+                                        nextPage();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
-            }
-        });
+                            });
+                }
+            });
 
-        if(auth.getCurrentUser()!=null){
-            Log.i("kkkkkkk",auth.getCurrentUser().getEmail());
-            nextPage();
-        }
+            if (auth.getCurrentUser() != null) {
+                Log.i("kkkkkkk", auth.getCurrentUser().getEmail());
+                nextPage();
+            }
+
     }
 }
